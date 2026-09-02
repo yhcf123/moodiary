@@ -81,13 +81,9 @@ class SettingLogic extends GetxController {
   }
 
   Future<void> toAi() async {
-    if (PrefUtil.getValue<String>('tencentId') != null &&
-        PrefUtil.getValue<String>('tencentKey') != null) {
-      HapticFeedback.selectionClick();
-      Get.toNamed(AppRoutes.assistantPage);
-    } else {
-      NoticeUtil.showToast('请先配置Key');
-    }
+    // GLM 密钥已本地化（glm_secret.dart），无需运行时检查
+    HapticFeedback.selectionClick();
+    Get.toNamed(AppRoutes.assistantPage);
   }
 
   Future<void> toCategoryManager() async {
