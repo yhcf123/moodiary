@@ -22,7 +22,7 @@ dependencies:
   fl_chart: 0.70.2
   file_picker: 9.0.2
   local_auth: 2.3.0
-  local_auth_android: 1.0.46
+  local_auth_android: 1.0.52
   permission_handler: 11.4.0
   image_picker: 1.1.2
   device_info_plus: 11.3.2
@@ -47,7 +47,7 @@ dependencies:
   dynamic_color: 1.7.0
   supabase_flutter: 2.8.4
   bitsdojo_window: 0.1.6
-  intl: 0.19.0
+  intl: 0.20.2
   collection: 1.19.1
   cupertino_icons: 1.0.8
   font_awesome_flutter: 10.8.0
