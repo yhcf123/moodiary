@@ -21,6 +21,8 @@ class MapLogic extends GetxController {
   @override
   void onReady() async {
     state.currentLatLng = await getLocation();
+    // 没给定位权限时兜底：显示全国视角，地图不至于整页空白
+    state.currentLatLng ??= const LatLng(35.86, 104.19);
     await getAllItem();
     update();
     super.onReady();

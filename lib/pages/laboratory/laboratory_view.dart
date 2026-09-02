@@ -23,39 +23,6 @@ class LaboratoryPage extends StatelessWidget {
         return ListView(
           children: [
             ListTile(
-              title: const Text('腾讯云密钥'),
-              isThreeLine: true,
-              subtitle: SelectionArea(
-                  child: Text(
-                'ID:${PrefUtil.getValue<String>('tencentId') ?? ''}\nKey:${PrefUtil.getValue<String>('tencentKey') ?? ''}',
-              )),
-              trailing: IconButton(
-                  onPressed: () async {
-                    final res = await showTextInputDialog(
-                      context: context,
-                      textFields: [
-                        DialogTextField(
-                          hintText: 'ID',
-                          initialText:
-                              PrefUtil.getValue<String>('tencentId') ?? '',
-                        ),
-                        DialogTextField(
-                          hintText: 'KEY',
-                          initialText:
-                              PrefUtil.getValue<String>('tencentKey') ?? '',
-                        ),
-                      ],
-                      title: '腾讯云密钥',
-                      message: '在腾讯云控制台获取密钥',
-                      style: AdaptiveStyle.material,
-                    );
-                    if (res != null) {
-                      logic.setTencentID(id: res[0], key: res[1]);
-                    }
-                  },
-                  icon: const FaIcon(FontAwesomeIcons.wrench)),
-            ),
-            ListTile(
               title: const Text('和风天气密钥'),
               subtitle: SelectionArea(
                   child: Text(PrefUtil.getValue<String>('qweatherKey') ?? '')),
@@ -75,30 +42,6 @@ class LaboratoryPage extends StatelessWidget {
                         ]);
                     if (res != null) {
                       logic.setQweatherKey(key: res[0]);
-                    }
-                  },
-                  icon: const FaIcon(FontAwesomeIcons.wrench)),
-            ),
-            ListTile(
-              title: const Text('天地图密钥'),
-              subtitle: SelectionArea(
-                  child: Text(PrefUtil.getValue<String>('tiandituKey') ?? '')),
-              trailing: IconButton(
-                  onPressed: () async {
-                    final res = await showTextInputDialog(
-                        context: context,
-                        textFields: [
-                          DialogTextField(
-                            hintText: 'KEY',
-                            initialText:
-                                PrefUtil.getValue<String>('tiandituKey') ?? '',
-                          )
-                        ],
-                        title: '天地图密钥',
-                        message: '在天地图控制台获取密钥',
-                        style: AdaptiveStyle.material);
-                    if (res != null) {
-                      logic.setTiandituKey(key: res[0]);
                     }
                   },
                   icon: const FaIcon(FontAwesomeIcons.wrench)),

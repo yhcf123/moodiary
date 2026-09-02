@@ -37,12 +37,12 @@ class MapPage extends StatelessWidget {
                 options: MapOptions(
                   initialCenter: state.currentLatLng!,
                   minZoom: 4.0,
-                  initialZoom: 16.0,
+                  initialZoom: 4.5,
                   maxZoom: 18.0,
                 ),
                 children: [
                   TileLayer(
-                    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    urlTemplate: 'https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
                     tileProvider: CachedTileProvider(
                       store: HiveCacheStore(
                         FileUtil.getRealPath('hive_cache', ''),

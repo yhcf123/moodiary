@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:moodiary/api/glm_api.dart';
 import 'package:moodiary/common/models/hunyuan.dart';
 import 'package:moodiary/common/values/keyboard_state.dart';
+import 'package:moodiary/presentation/pref.dart';
 import 'package:moodiary/utils/notice_util.dart';
 import 'package:refreshed/refreshed.dart';
 
@@ -54,9 +57,37 @@ class AssistantLogic extends GetxController with WidgetsBindingObserver {
     super.didChangeMetrics();
   }
 
+  static const _chatKey = 'ai_chat_history';
+
   @override
   void onInit() {
     super.onInit();
+    _loadChat();
+  }
+
+  void _loadChat() {
+    final raw = PrefUtil.getValue<String>(_chatKey);
+    if (raw == null || raw.isEmpty) return;
+    try {
+      final list = jsonDecode(raw) as List;
+      for (final e in list.cast<Map<String, dynamic>>()) {
+        state.messages[DateTime.tryParse(e['t'] as String) ?? DateTime.now()] =
+            Message(e['r'] as String, e['c'] as String);
+      }
+    } catch (_) {}
+  }
+
+  void _saveChat() {
+    final list = state.messages.entries
+        .map((e) => {
+              't': e.key.toIso8601String(),
+              'r': e.value.role,
+              'c': e.value.content,
+            })
+        .toList();
+    // 只留最近 50 条，防止无限膨胀
+    final trimmed = list.length > 50 ? list.sublist(list.length - 50) : list;
+    PrefUtil.setValue<String>(_chatKey, jsonEncode(trimmed));
   }
 
   @override
@@ -108,6 +139,7 @@ class AssistantLogic extends GetxController with WidgetsBindingObserver {
       //拿到用户提问后，对话上下文中增加一项用户提问
       final askTime = DateTime.now();
       state.messages[askTime] = Message('user', ask);
+      _saveChat();
       update();
       toBottom();
       //带着上下文请求
@@ -130,11 +162,13 @@ class AssistantLogic extends GetxController with WidgetsBindingObserver {
         toBottom();
       }, onDone: () {
         state.isStreaming = false;
+        _saveChat();
         update();
         toBottom();
       }, onError: (e) {
         state.messages[replyTime]!.content += ' [请求出错]';
         state.isStreaming = false;
+        _saveChat();
         update();
       });
     }
@@ -160,5 +194,6 @@ class AssistantLogic extends GetxController with WidgetsBindingObserver {
   void changeModel(version) {
     state.modelVersion.value = version;
     state.messages = {};
+    _saveChat();
   }
 }
