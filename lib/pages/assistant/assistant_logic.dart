@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:moodiary/api/api.dart';
+import 'package:moodiary/api/glm_api.dart';
 import 'package:moodiary/common/models/hunyuan.dart';
 import 'package:moodiary/common/values/keyboard_state.dart';
 import 'package:moodiary/utils/notice_util.dart';
@@ -115,23 +113,22 @@ class AssistantLogic extends GetxController with WidgetsBindingObserver {
       update();
       toBottom();
       //带着上下文请求
-      final stream = await Api.getHunYuan(check['id']!, check['key']!,
+      final stream = await GlmApi.chat(
           state.messages.values.toList(), state.modelVersion.value);
+      if (stream == null) {
+        NoticeUtil.showToast('请先配置 GLM Key（lib/common/values/glm_secret.dart）');
+        return;
+      }
       //如果收到了请求，添加一个回答上下文
       final replyTime = DateTime.now();
       state.messages[replyTime] = Message('assistant', '');
       update();
       //接收stream
-      stream?.listen((content) {
-        if (content != '' && content.contains('data')) {
-          final HunyuanResponse result =
-              HunyuanResponse.fromJson(jsonDecode(content.split('data: ')[1]));
-          state.messages[replyTime]!.content +=
-              result.choices!.first.delta!.content!;
-          HapticFeedback.vibrate();
-          update();
-          toBottom();
-        }
+      stream.listen((content) {
+        state.messages[replyTime]!.content += content;
+        HapticFeedback.vibrate();
+        update();
+        toBottom();
       });
     }
   }
