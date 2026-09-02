@@ -20,10 +20,10 @@ class AssistantPage extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     final modelMap = {
-      0: 'hunyuan-lite',
-      1: 'hunyuan-standard',
-      2: 'hunyuan-pro',
-      3: 'hunyuan-turbo',
+      0: 'GLM-4-Flash（免费）',
+      1: 'GLM-4-Air',
+      2: 'GLM-4-Plus',
+      3: 'GLM-4-Flash（免费）',
     };
 
     Widget buildInput() {

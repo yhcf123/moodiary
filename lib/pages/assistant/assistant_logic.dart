@@ -4,7 +4,6 @@ import 'package:moodiary/api/glm_api.dart';
 import 'package:moodiary/common/models/hunyuan.dart';
 import 'package:moodiary/common/values/keyboard_state.dart';
 import 'package:moodiary/utils/notice_util.dart';
-import 'package:moodiary/utils/signature_util.dart';
 import 'package:refreshed/refreshed.dart';
 
 import 'assistant_state.dart';
@@ -101,8 +100,7 @@ class AssistantLogic extends GetxController with WidgetsBindingObserver {
 
   //对话
   Future<void> getAi(String ask) async {
-    final check = SignatureUtil.checkTencent();
-    if (check != null) {
+    {
       //清空输入框
       clearText();
       //失去焦点

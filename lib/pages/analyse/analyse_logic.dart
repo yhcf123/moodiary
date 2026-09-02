@@ -71,13 +71,10 @@ class AnalyseLogic extends GetxController {
   }
 
   Future<void> getAi() async {
-    final check = SignatureUtil.checkTencent();
-    if (check != null) {
+    {
       state.reply = '';
       update();
-      final stream = await Api.getHunYuan(
-          check['id']!,
-          check['key']!,
+      final stream = await GlmApi.chat(
           [
             Message(
               'system',
@@ -87,12 +84,9 @@ class AnalyseLogic extends GetxController {
           ],
           0);
       stream?.listen((content) {
-        if (content != '' && content.contains('data')) {
-          final HunyuanResponse result =
-              HunyuanResponse.fromJson(jsonDecode(content.split('data: ')[1]));
-          state.reply += result.choices!.first.delta!.content!;
-          update();
-        }
+        state.reply += content;
+        update();
+      });
       });
     }
   }
