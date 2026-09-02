@@ -31,7 +31,7 @@ class MapPage extends StatelessWidget {
       ),
       body: GetBuilder<MapLogic>(
         builder: (_) {
-          return state.currentLatLng != null && state.tiandituKey != null
+          return state.currentLatLng != null
               ? FlutterMap(
                 mapController: logic.mapController,
                 options: MapOptions(
@@ -42,8 +42,7 @@ class MapPage extends StatelessWidget {
                 ),
                 children: [
                   TileLayer(
-                    urlTemplate:
-                        'http://t6.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=${state.tiandituKey}',
+                    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                     tileProvider: CachedTileProvider(
                       store: HiveCacheStore(
                         FileUtil.getRealPath('hive_cache', ''),
@@ -52,18 +51,7 @@ class MapPage extends StatelessWidget {
                       dio: HttpUtil().dio,
                     ),
                     tileSize: 256,
-                  ),
-                  TileLayer(
-                    urlTemplate:
-                        'http://t6.tianditu.gov.cn/cva_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=${state.tiandituKey}',
-                    tileProvider: CachedTileProvider(
-                      store: HiveCacheStore(
-                        FileUtil.getRealPath('hive_cache', ''),
-                        hiveBoxName: 'HiveCache',
-                      ),
-                      dio: HttpUtil().dio,
-                    ),
-                    tileSize: 256,
+                    userAgentPackageName: 'com.yhcf123.lakeisle',
                   ),
                   MarkerClusterLayerWidget(
                     options: MarkerClusterLayerOptions(

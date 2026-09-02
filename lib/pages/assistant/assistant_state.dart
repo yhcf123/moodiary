@@ -13,6 +13,9 @@ class AssistantState {
 
   late int totalToken;
 
+  /// 正在流式输出中（此时用纯文本渲染，避免半截Markdown崩组件）
+  bool isStreaming = false;
+
   AssistantState() {
     messages = {};
 

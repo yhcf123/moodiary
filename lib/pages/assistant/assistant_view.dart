@@ -115,13 +115,15 @@ class AssistantPage extends StatelessWidget {
                           )
                         ],
                       ),
-                      MarkdownBlock(
-                        data: messageList[index].content,
-                        selectable: true,
-                        config: colorScheme.brightness == Brightness.dark
-                            ? MarkdownConfig.darkConfig
-                            : MarkdownConfig.defaultConfig,
-                      ),
+                      state.isStreaming && index == messageList.length - 1
+                          ? SelectableText(messageList[index].content)
+                          : MarkdownBlock(
+                              data: messageList[index].content,
+                              selectable: true,
+                              config: colorScheme.brightness == Brightness.dark
+                                  ? MarkdownConfig.darkConfig
+                                  : MarkdownConfig.defaultConfig,
+                            ),
                     ],
                   ),
                 ),

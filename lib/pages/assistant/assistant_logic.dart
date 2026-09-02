@@ -120,13 +120,22 @@ class AssistantLogic extends GetxController with WidgetsBindingObserver {
       //如果收到了请求，添加一个回答上下文
       final replyTime = DateTime.now();
       state.messages[replyTime] = Message('assistant', '');
+      state.isStreaming = true;
       update();
-      //接收stream
+      //接收stream：流式中纯文本渲染，结束后Markdown渲染
       stream.listen((content) {
         state.messages[replyTime]!.content += content;
         HapticFeedback.vibrate();
         update();
         toBottom();
+      }, onDone: () {
+        state.isStreaming = false;
+        update();
+        toBottom();
+      }, onError: (e) {
+        state.messages[replyTime]!.content += ' [请求出错]';
+        state.isStreaming = false;
+        update();
       });
     }
   }

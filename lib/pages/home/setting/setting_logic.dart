@@ -72,12 +72,9 @@ class SettingLogic extends GetxController {
   }
 
   Future<void> toMap() async {
-    if (PrefUtil.getValue<String>('tiandituKey') != null) {
-      HapticFeedback.selectionClick();
-      Get.toNamed(AppRoutes.mapPage);
-    } else {
-      NoticeUtil.showToast('请先配置Key');
-    }
+    // 地图已换 OSM 瓦片，免 key
+    HapticFeedback.selectionClick();
+    Get.toNamed(AppRoutes.mapPage);
   }
 
   Future<void> toAi() async {
